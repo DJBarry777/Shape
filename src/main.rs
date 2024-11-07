@@ -1,7 +1,7 @@
 use std::ops;
 use image::save_buffer;
 
-const RES: Vect2<usize> = Vect2 { x: 1920, y: 1080 };
+const RES: Vect2<usize> = Vect2 { x: 1920, y: 1000 };
 const GAMMA: f64 = 1.0 / 2.2;
 const FILE_NAME: &str = "shape.png";
 
@@ -11,100 +11,99 @@ fn main() {
     let mut omlaut = Shape {
         color: Rgba(0.0, 0.0, 0.0, 1.0),
         size: 37.5,
-        origin: Point { x: 28.0, y: 50.0 },
+        origin: Vect2 { x: 28.0, y: 50.0 },
         contours: vec![
             vec![
-                Point2 { touching: true, x: 60.0, y: 0.0 }, Point2 { touching: false, x: 0.0, y: 0.0 },
-                Point2 { touching: true, x: 0.0, y: 60.0 }, Point2 { touching: false, x: 0.0, y: 120.0 },
-                Point2 { touching: true, x: 60.0, y: 120.0 }, Point2 { touching: false, x: 120.0, y: 120.0 },
-                Point2 { touching: true, x: 120.0, y: 60.0 }, Point2 { touching: false, x: 120.0, y: 0.0 },
+                Point { online: true, x: 60.0, y: 0.0 }, Point { online: false, x: 0.0, y: 0.0 },
+                Point { online: true, x: 0.0, y: 60.0 }, Point { online: false, x: 0.0, y: 120.0 },
+                Point { online: true, x: 60.0, y: 120.0 }, Point { online: false, x: 120.0, y: 120.0 },
+                Point { online: true, x: 120.0, y: 60.0 }, Point { online: false, x: 120.0, y: 0.0 },
             ],
             vec![
-                Point2 { touching: true, x: 60.0, y: 24.0 }, Point2 { touching: false, x: 24.0, y: 24.0 },
-                Point2 { touching: true, x: 24.0, y: 60.0 }, Point2 { touching: false, x: 24.0, y: 96.0 },
-                Point2 { touching: true, x: 60.0, y: 96.0 }, Point2 { touching: false, x: 96.0, y: 96.0 },
-                Point2 { touching: true, x: 96.0, y: 60.0 }, Point2 { touching: false, x: 96.0, y: 24.0 },
+                Point { online: true, x: 60.0, y: 24.0 }, Point { online: false, x: 24.0, y: 24.0 },
+                Point { online: true, x: 24.0, y: 60.0 }, Point { online: false, x: 24.0, y: 96.0 },
+                Point { online: true, x: 60.0, y: 96.0 }, Point { online: false, x: 96.0, y: 96.0 },
+                Point { online: true, x: 96.0, y: 60.0 }, Point { online: false, x: 96.0, y: 24.0 },
             ],
             vec![
-                Point2 { touching: true, x: 40.0, y: 130.0 }, Point2 { touching: false, x: 30.0, y: 130.0 },
-                Point2 { touching: true, x: 30.0, y: 140.0 }, Point2 { touching: false, x: 30.0, y: 150.0 },
-                Point2 { touching: true, x: 40.0, y: 150.0 }, Point2 { touching: false, x: 50.0, y: 150.0 },
-                Point2 { touching: true, x: 50.0, y: 140.0 }, Point2 { touching: false, x: 50.0, y: 130.0 },
+                Point { online: true, x: 40.0, y: 130.0 }, Point { online: false, x: 30.0, y: 130.0 },
+                Point { online: true, x: 30.0, y: 140.0 }, Point { online: false, x: 30.0, y: 150.0 },
+                Point { online: true, x: 40.0, y: 150.0 }, Point { online: false, x: 50.0, y: 150.0 },
+                Point { online: true, x: 50.0, y: 140.0 }, Point { online: false, x: 50.0, y: 130.0 },
             ],
             vec![
-                Point2 { touching: true, x: 80.0, y: 130.0 }, Point2 { touching: false, x: 70.0, y: 130.0 },
-                Point2 { touching: true, x: 70.0, y: 140.0 }, Point2 { touching: false, x: 70.0, y: 150.0 },
-                Point2 { touching: true, x: 80.0, y: 150.0 }, Point2 { touching: false, x: 90.0, y: 150.0 },
-                Point2 { touching: true, x: 90.0, y: 140.0 }, Point2 { touching: false, x: 90.0, y: 130.0 },
+                Point { online: true, x: 80.0, y: 130.0 }, Point { online: false, x: 70.0, y: 130.0 },
+                Point { online: true, x: 70.0, y: 140.0 }, Point { online: false, x: 70.0, y: 150.0 },
+                Point { online: true, x: 80.0, y: 150.0 }, Point { online: false, x: 90.0, y: 150.0 },
+                Point { online: true, x: 90.0, y: 140.0 }, Point { online: false, x: 90.0, y: 130.0 },
             ],
         ],
     };
 
     omlaut.rotate(-0.08);
     omlaut.transform_to_view();
-    omlaut.rasterize(&mut screen);
+    screen.alpha_over(omlaut.rasterize(), omlaut.color);
 
     let mut heart = Shape {
         color: Rgba(1.0, 0.02, 0.02, 0.8),
         size: 75.0,
-        origin: Point { x: 30.0, y: 27.5 },
+        origin: Vect2 { x: 30.0, y: 27.5 },
         contours: vec![vec![
-            Point2 { touching: true, x: 240.0, y: 80.0 },
-            Point2 { touching: true, x: 160.0, y: 0.0 },
-            Point2 { touching: true, x: 80.0, y: 80.0 }, Point2 { touching: false, x: 0.0, y: 160.0 },
-            Point2 { touching: true, x: 40.0, y: 200.0 }, Point2 { touching: false, x: 80.0, y: 240.0 },
-            Point2 { touching: true, x: 160.0, y: 160.0 }, Point2 { touching: false, x: 240.0, y: 240.0 },
-            Point2 { touching: true, x: 280.0, y: 200.0 }, Point2 { touching: false, x: 320.0, y: 160.0 },
+            Point { online: true, x: 240.0, y: 80.0 },
+            Point { online: true, x: 160.0, y: 0.0 },
+            Point { online: true, x: 80.0, y: 80.0 }, Point { online: false, x: 0.0, y: 160.0 },
+            Point { online: true, x: 40.0, y: 200.0 }, Point { online: false, x: 80.0, y: 240.0 },
+            Point { online: true, x: 160.0, y: 160.0 }, Point { online: false, x: 240.0, y: 240.0 },
+            Point { online: true, x: 280.0, y: 200.0 }, Point { online: false, x: 320.0, y: 160.0 },
         ]],
     };
 
     heart.transform_to_view();
-    heart.rasterize(&mut screen);
+    screen.alpha_over(heart.rasterize(), heart.color);
 
     let mut star = Shape {
         color: Rgba(0.0, 1.0, 0.2, 1.0),
         size: 20.0,
-        origin: Point { x: 90.3, y: 35.2 },
+        origin: Vect2 { x: 90.3, y: 35.2 },
         contours: vec![vec![
-            Point2 { touching: true, x: -10.0, y: -120.0, },
-            Point2 { touching: true, x: 0.0, y: 0.0 },
-            Point2 { touching: true, x: -120.0, y: -10.0, },
-            Point2 { touching: true, x: -120.0, y: 10.0 },
-            Point2 { touching: true, x: 0.0, y: 0.0 },
-            Point2 { touching: true, x: -10.0, y: 120.0 },
-            Point2 { touching: true, x: 10.0, y: 120.0 },
-            Point2 { touching: true, x: 0.0, y: 0.0 },
-            Point2 { touching: true, x: 120.0, y: 10.0 },
-            Point2 { touching: true, x: 120.0, y: -10.0 },
-            Point2 { touching: true, x: 0.0, y: 0.0 },
-            Point2 { touching: true, x: 10.0, y: -120.0 },
+            Point { online: true, x: -10.0, y: -120.0, },
+            Point { online: true, x: 0.0, y: 0.0 },
+            Point { online: true, x: -120.0, y: -10.0, },
+            Point { online: true, x: -120.0, y: 10.0 },
+            Point { online: true, x: 0.0, y: 0.0 },
+            Point { online: true, x: -10.0, y: 120.0 },
+            Point { online: true, x: 10.0, y: 120.0 },
+            Point { online: true, x: 0.0, y: 0.0 },
+            Point { online: true, x: 120.0, y: 10.0 },
+            Point { online: true, x: 120.0, y: -10.0 },
+            Point { online: true, x: 0.0, y: 0.0 },
+            Point { online: true, x: 10.0, y: -120.0 },
         ]],
     };
 
     star.rotate(1.01);
     star.transform_to_view();
-    star.rasterize(&mut screen);
+    screen.alpha_over(star.rasterize(), star.color);
 
     save_image(&screen);
 }
-
-type Point = Vect2<f64>;
 
 struct Vect2<T> {
     x: T,
     y: T,
 }
 
-struct Point2 {
-    touching: bool,
+// A point specifically within a contour. It is `online` if it is not a control point.
+struct Point {
+    online: bool,
     x: f64,
     y: f64,
 }
 
-impl Point2 {
-    fn translate_scale(&mut self, scale: f64, offset: &Point) {
-        *self = Point2 {
-            touching: self.touching,
+impl Point {
+    fn scale_then_translate(&mut self, scale: f64, offset: &Vect2<f64>) {
+        *self = Point {
+            online: self.online,
             x: self.x * scale + offset.x,
             y: self.y * scale + offset.y,
         };
@@ -114,12 +113,12 @@ impl Point2 {
 struct Screen<T>(Vec<Vec<T>>);
 
 impl<T: Copy + Clone> Screen<T> {
-    fn new(color: T) -> Self {
+    fn new(value: T) -> Self {
         let mut row: Vec<T> = Vec::with_capacity(RES.x);
         let mut screen: Self = Screen(Vec::with_capacity(RES.y));
 
         for _ in 0..RES.x {
-            row.push(color);
+            row.push(value);
         }
 
         for _ in 0..RES.y {
@@ -130,11 +129,29 @@ impl<T: Copy + Clone> Screen<T> {
     }
 }
 
+impl Screen<Rgba> {
+    fn alpha_over(&mut self, mask: Screen<f64>, color: Rgba) {
+        for y in 0..self.0.len() {
+            for x in 0..self.0[y].len() {
+                match mask.0[y][x] {
+                    0.0 => (),
+                    1.0 => self.0[y][x] = self.0[y][x] + color,
+                    _ => {
+                        let mut new_color = color;
+                        new_color.3 *= mask.0[y][x];
+                        self.0[y][x] = self.0[y][x] + new_color;
+                    },
+                }
+            }
+        }
+    }
+}
+
 #[derive(Copy, Clone)]
 struct Rgba(f64, f64, f64, f64);
 
 impl Rgba {
-    fn finalize(&self) -> [u8; 3] {
+    fn as_srgb(&self) -> [u8; 3] {
         [
             (self.0.powf(GAMMA) * 255.0) as u8,
             (self.1.powf(GAMMA) * 255.0) as u8,
@@ -162,23 +179,23 @@ impl ops::Add for Rgba {
 }
 
 struct Shape {
-    origin: Point,
+    origin: Vect2<f64>,
     size: f64,
     color: Rgba,
-    contours: Vec<Vec<Point2>>,
+    contours: Vec<Vec<Point>>,
 }
 
 impl Shape {
     fn transform_to_view(&mut self) {
         let scale_factor = self.size * (RES.y as f64) / 24000.0;
-        let offset = Point {
+        let offset = Vect2 {
             x: self.origin.x * (RES.y as f64) / 100.0,
             y: self.origin.y * (RES.y as f64) / 100.0,
         };
 
         for contour in self.contours.iter_mut() {
             for point in contour {
-                point.translate_scale(scale_factor, &offset);
+                point.scale_then_translate(scale_factor, &offset);
             }
         }
     }
@@ -196,42 +213,42 @@ impl Shape {
         }
     }
 
-    fn y_bounds(&self) -> (usize, usize) {
-        let mut max_y = 0.0;
-        let mut min_y = RES.y as f64;
+    fn y_bounds(&self) -> ops::Range<usize> {
+        let mut max = 0.0;
+        let mut min = RES.y as f64;
 
         for contour in &self.contours {
             for point in contour {
-                if point.y > max_y {
-                    max_y = point.y;
-                } else if point.y < min_y {
-                    min_y = point.y;
+                if point.y > max {
+                    max = point.y;
+                } else if point.y < min {
+                    min = point.y;
                 }
             }
         }
 
-        max_y = max_y.clamp(0.0, (RES.y - 1) as f64);
-        min_y = min_y.clamp(0.0, RES.y as f64);
+        max = max.clamp(0.0, (RES.y - 1) as f64);
+        min = min.clamp(0.0, RES.y as f64);
 
-        (min_y as usize, 1 + max_y as usize)
+        (min as usize)..(1 + max as usize)
     }
 
-    fn rasterize(&self, screen: &mut Screen<Rgba>) {
-        let (lower_bound, upper_bound) = self.y_bounds();
+    fn rasterize(&self) -> Screen<f64> {
+        let mut mask: Screen<f64> = Screen::new(0.0);
 
-        for scanline in (lower_bound..upper_bound).rev() {
+        for scanline in self.y_bounds().rev() {
             let mut intersections: Vec<f64> = Vec::new();
 
             for contour in &self.contours {
                 for (i, point) in contour.iter().enumerate() {
-                    if !point.touching {
+                    if !point.online {
                         continue;
                     }
 
                     let y = scanline as f64 + 0.5;
                     let point2 = &contour[(i + 1) % contour.len()];
 
-                    if point2.touching {
+                    if point2.online {
                         if let Some(n) = intersect_linear(y, point, point2) {
                             intersections.push(n);
                         }
@@ -250,37 +267,16 @@ impl Shape {
 
             intersections.sort_by(|a, b| a.partial_cmp(b).unwrap());
 
-            let row = &mut screen.0[RES.y - scanline - 1];
+            let row = &mut mask.0[RES.y - scanline - 1];
 
-            for i in (0..intersections.len()).step_by(2) {
-                let slice_start = (intersections[i] as usize + 1).clamp(0, RES.x - 1);
-                let intersected1 = (slice_start - 1).clamp(0, RES.x - 1);
-                let slice_end = (intersections[i + 1] as usize).clamp(0, RES.x - 1);
-                let intersected2 = (slice_end).clamp(0, RES.x - 1);
-
-                if intersected1 == intersected2 {
-                    let mut color = self.color;
-                    color.3 *= intersections[i + 1] - intersections[i];
-                    row[intersected1] = row[intersected1] + color;
-                } else {
-                    let mut color = self.color;
-                    color.3 *= (intersected1 + 1) as f64 - intersections[i];
-                    row[intersected1] = row[intersected1] + color;
-
-                    let mut color = self.color;
-                    color.3 *= intersections[i + 1] - (intersected2) as f64;
-                    row[intersected2] = row[intersected2] + color;
-                }
-
-                for x_pos in slice_start..slice_end {
-                    row[x_pos] = row[x_pos] + self.color;
-                }
-            }
+            fill_row(row, &intersections);
         }
+
+        return mask;
     }
 }
 
-fn intersect_linear(y: f64, start: &Point2, end: &Point2) -> Option<f64> {
+fn intersect_linear(y: f64, start: &Point, end: &Point) -> Option<f64> {
     if start.y == end.y
         || start.y > y && end.y > y
         || start.y < y && end.y < y
@@ -305,7 +301,7 @@ fn intersect_linear(y: f64, start: &Point2, end: &Point2) -> Option<f64> {
     None
 }
 
-fn intersect_quadratic(y: f64, start: &Point2, control: &Point2, end: &Point2) -> [Option<f64>; 2] {
+fn intersect_quadratic(y: f64, start: &Point, control: &Point, end: &Point) -> [Option<f64>; 2] {
     let mut roots: [Option<f64>; 2] = [None, None];
 
     if start.y == control.y && start.y == end.y
@@ -335,7 +331,6 @@ fn intersect_quadratic(y: f64, start: &Point2, control: &Point2, end: &Point2) -
             let t_minus = 1.0 - root;
 
             roots[i] = Some(
-                // parametric equation for bezier curve
                 t_minus * (start.x * t_minus + 2.0 * control.x * root) + end.x * root * root,
             );
         }
@@ -344,14 +339,34 @@ fn intersect_quadratic(y: f64, start: &Point2, control: &Point2, end: &Point2) -
     roots
 }
 
+fn fill_row(row: &mut [f64], intersections: &[f64]) {
+    for i in (0..intersections.len()).step_by(2) {
+        let slice_start = (intersections[i] as usize + 1).clamp(0, RES.x - 1);
+        let pixel1 = (slice_start - 1).clamp(0, RES.x - 1);
+        let slice_end = (intersections[i + 1] as usize).clamp(0, RES.x - 1);
+        let pixel2 = (slice_end).clamp(0, RES.x - 1);
+
+        if pixel1 == pixel2 {
+            row[pixel1] = intersections[i + 1] - intersections[i];
+        } else {
+            row[pixel1] = (pixel1 + 1) as f64 - intersections[i];
+            row[pixel2] = intersections[i + 1] - pixel2 as f64;
+        }
+
+        for x_pos in slice_start..slice_end {
+            row[x_pos] = 1.0;
+        }
+    }
+}
+
 fn save_image(screen: &Screen<Rgba>) {
     let mut buffer: Vec<u8> = Vec::with_capacity(RES.x * RES.y * 3);
-    let mut final_color: [u8; 3];
+    let mut color: [u8; 3];
 
     for row in &screen.0 {
         for pixel in row {
-            final_color = pixel.finalize();
-            buffer.extend(final_color);
+            color = pixel.as_srgb();
+            buffer.extend_from_slice(&color);
         }
     }
 
