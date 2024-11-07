@@ -14,28 +14,28 @@ fn main() {
         origin: Point { x: 28.0, y: 50.0 },
         contours: vec![
             vec![
-                Curve::Bend(Point { x: 60.0, y: 0.0 }, Point { x: 0.0, y: 0.0 }),
-                Curve::Bend(Point { x: 0.0, y: 60.0 }, Point { x: 0.0, y: 120.0 }),
-                Curve::Bend(Point { x: 60.0, y: 120.0 }, Point { x: 120.0, y: 120.0 }),
-                Curve::Bend(Point { x: 120.0, y: 60.0 }, Point { x: 120.0, y: 0.0 }),
+                Point2 { touching: true, x: 60.0, y: 0.0 }, Point2 { touching: false, x: 0.0, y: 0.0 },
+                Point2 { touching: true, x: 0.0, y: 60.0 }, Point2 { touching: false, x: 0.0, y: 120.0 },
+                Point2 { touching: true, x: 60.0, y: 120.0 }, Point2 { touching: false, x: 120.0, y: 120.0 },
+                Point2 { touching: true, x: 120.0, y: 60.0 }, Point2 { touching: false, x: 120.0, y: 0.0 },
             ],
             vec![
-                Curve::Bend(Point { x: 60.0, y: 24.0 }, Point { x: 24.0, y: 24.0 }),
-                Curve::Bend(Point { x: 24.0, y: 60.0 }, Point { x: 24.0, y: 96.0 }),
-                Curve::Bend(Point { x: 60.0, y: 96.0 }, Point { x: 96.0, y: 96.0 }),
-                Curve::Bend(Point { x: 96.0, y: 60.0 }, Point { x: 96.0, y: 24.0 }),
+                Point2 { touching: true, x: 60.0, y: 24.0 }, Point2 { touching: false, x: 24.0, y: 24.0 },
+                Point2 { touching: true, x: 24.0, y: 60.0 }, Point2 { touching: false, x: 24.0, y: 96.0 },
+                Point2 { touching: true, x: 60.0, y: 96.0 }, Point2 { touching: false, x: 96.0, y: 96.0 },
+                Point2 { touching: true, x: 96.0, y: 60.0 }, Point2 { touching: false, x: 96.0, y: 24.0 },
             ],
             vec![
-                Curve::Bend(Point { x: 40.0, y: 130.0 }, Point { x: 30.0, y: 130.0 }),
-                Curve::Bend(Point { x: 30.0, y: 140.0 }, Point { x: 30.0, y: 150.0 }),
-                Curve::Bend(Point { x: 40.0, y: 150.0 }, Point { x: 50.0, y: 150.0 }),
-                Curve::Bend(Point { x: 50.0, y: 140.0 }, Point { x: 50.0, y: 130.0 }),
+                Point2 { touching: true, x: 40.0, y: 130.0 }, Point2 { touching: false, x: 30.0, y: 130.0 },
+                Point2 { touching: true, x: 30.0, y: 140.0 }, Point2 { touching: false, x: 30.0, y: 150.0 },
+                Point2 { touching: true, x: 40.0, y: 150.0 }, Point2 { touching: false, x: 50.0, y: 150.0 },
+                Point2 { touching: true, x: 50.0, y: 140.0 }, Point2 { touching: false, x: 50.0, y: 130.0 },
             ],
             vec![
-                Curve::Bend(Point { x: 80.0, y: 130.0 }, Point { x: 70.0, y: 130.0 }),
-                Curve::Bend(Point { x: 70.0, y: 140.0 }, Point { x: 70.0, y: 150.0 }),
-                Curve::Bend(Point { x: 80.0, y: 150.0 }, Point { x: 90.0, y: 150.0 }),
-                Curve::Bend(Point { x: 90.0, y: 140.0 }, Point { x: 90.0, y: 130.0 }),
+                Point2 { touching: true, x: 80.0, y: 130.0 }, Point2 { touching: false, x: 70.0, y: 130.0 },
+                Point2 { touching: true, x: 70.0, y: 140.0 }, Point2 { touching: false, x: 70.0, y: 150.0 },
+                Point2 { touching: true, x: 80.0, y: 150.0 }, Point2 { touching: false, x: 90.0, y: 150.0 },
+                Point2 { touching: true, x: 90.0, y: 140.0 }, Point2 { touching: false, x: 90.0, y: 130.0 },
             ],
         ],
     };
@@ -49,12 +49,12 @@ fn main() {
         size: 75.0,
         origin: Point { x: 30.0, y: 27.5 },
         contours: vec![vec![
-            Curve::Line(Point { x: 240.0, y: 80.0 }),
-            Curve::Line(Point { x: 160.0, y: 0.0 }),
-            Curve::Bend(Point { x: 80.0, y: 80.0 }, Point { x: 0.0, y: 160.0 }),
-            Curve::Bend(Point { x: 40.0, y: 200.0 }, Point { x: 80.0, y: 240.0 }),
-            Curve::Bend(Point { x: 160.0, y: 160.0 }, Point { x: 240.0, y: 240.0 }),
-            Curve::Bend(Point { x: 280.0, y: 200.0 }, Point { x: 320.0, y: 160.0 }),
+            Point2 { touching: true, x: 240.0, y: 80.0 },
+            Point2 { touching: true, x: 160.0, y: 0.0 },
+            Point2 { touching: true, x: 80.0, y: 80.0 }, Point2 { touching: false, x: 0.0, y: 160.0 },
+            Point2 { touching: true, x: 40.0, y: 200.0 }, Point2 { touching: false, x: 80.0, y: 240.0 },
+            Point2 { touching: true, x: 160.0, y: 160.0 }, Point2 { touching: false, x: 240.0, y: 240.0 },
+            Point2 { touching: true, x: 280.0, y: 200.0 }, Point2 { touching: false, x: 320.0, y: 160.0 },
         ]],
     };
 
@@ -66,18 +66,18 @@ fn main() {
         size: 20.0,
         origin: Point { x: 90.3, y: 35.2 },
         contours: vec![vec![
-            Curve::Line(Point { x: -10.0, y: -120.0, }),
-            Curve::Line(Point { x: 0.0, y: 0.0 }),
-            Curve::Line(Point { x: -120.0, y: -10.0, }),
-            Curve::Line(Point { x: -120.0, y: 10.0 }),
-            Curve::Line(Point { x: 0.0, y: 0.0 }),
-            Curve::Line(Point { x: -10.0, y: 120.0 }),
-            Curve::Line(Point { x: 10.0, y: 120.0 }),
-            Curve::Line(Point { x: 0.0, y: 0.0 }),
-            Curve::Line(Point { x: 120.0, y: 10.0 }),
-            Curve::Line(Point { x: 120.0, y: -10.0 }),
-            Curve::Line(Point { x: 0.0, y: 0.0 }),
-            Curve::Line(Point { x: 10.0, y: -120.0 }),
+            Point2 { touching: true, x: -10.0, y: -120.0, },
+            Point2 { touching: true, x: 0.0, y: 0.0 },
+            Point2 { touching: true, x: -120.0, y: -10.0, },
+            Point2 { touching: true, x: -120.0, y: 10.0 },
+            Point2 { touching: true, x: 0.0, y: 0.0 },
+            Point2 { touching: true, x: -10.0, y: 120.0 },
+            Point2 { touching: true, x: 10.0, y: 120.0 },
+            Point2 { touching: true, x: 0.0, y: 0.0 },
+            Point2 { touching: true, x: 120.0, y: 10.0 },
+            Point2 { touching: true, x: 120.0, y: -10.0 },
+            Point2 { touching: true, x: 0.0, y: 0.0 },
+            Point2 { touching: true, x: 10.0, y: -120.0 },
         ]],
     };
 
@@ -95,18 +95,20 @@ struct Vect2<T> {
     y: T,
 }
 
-impl Vect2<f64> {
-    fn translate_scale(&self, scale: f64, offset: &Self) -> Self {
-        Point {
-            x: self.x * scale + offset.x,
-            y: self.y * scale + offset.y,
-        }
-    }
+struct Point2 {
+    touching: bool,
+    x: f64,
+    y: f64,
 }
 
-enum Curve {
-    Line(Point),
-    Bend(Point, Point),
+impl Point2 {
+    fn translate_scale(&mut self, scale: f64, offset: &Point) {
+        *self = Point2 {
+            touching: self.touching,
+            x: self.x * scale + offset.x,
+            y: self.y * scale + offset.y,
+        };
+    }
 }
 
 struct Screen<T>(Vec<Vec<T>>);
@@ -163,7 +165,7 @@ struct Shape {
     origin: Point,
     size: f64,
     color: Rgba,
-    contours: Vec<Vec<Curve>>,
+    contours: Vec<Vec<Point2>>,
 }
 
 impl Shape {
@@ -175,14 +177,8 @@ impl Shape {
         };
 
         for contour in self.contours.iter_mut() {
-            for curve in contour {
-                *curve = match curve {
-                    Curve::Line(start) => Curve::Line(start.translate_scale(scale_factor, &offset)),
-                    Curve::Bend(start, control) => Curve::Bend(
-                        start.translate_scale(scale_factor, &offset),
-                        control.translate_scale(scale_factor, &offset),
-                    ),
-                };
+            for point in contour {
+                point.translate_scale(scale_factor, &offset);
             }
         }
     }
@@ -192,23 +188,10 @@ impl Shape {
         let sin_rotation = rotation.sin();
 
         for contour in &mut self.contours {
-            for curve in contour {
-                match curve {
-                    Curve::Line(start) => {
-                        let new_point_x = start.x * cos_rotation - start.y * sin_rotation;
-                        start.y = start.x * sin_rotation + start.y * cos_rotation;
-                        start.x = new_point_x;
-                    }
-                    Curve::Bend(start, control) => {
-                        let new_p1_x = start.x * cos_rotation - start.y * sin_rotation;
-                        start.y = start.x * sin_rotation + start.y * cos_rotation;
-                        start.x = new_p1_x;
-
-                        let new_p2_x = control.x * cos_rotation - control.y * sin_rotation;
-                        control.y = control.x * sin_rotation + control.y * cos_rotation;
-                        control.x = new_p2_x;
-                    }
-                };
+            for point in contour {
+                let new_point_x = point.x * cos_rotation - point.y * sin_rotation;
+                point.y = point.x * sin_rotation + point.y * cos_rotation;
+                point.x = new_point_x;
             }
         }
     }
@@ -218,28 +201,11 @@ impl Shape {
         let mut min_y = RES.y as f64;
 
         for contour in &self.contours {
-            for curve in contour {
-                match curve {
-                    Curve::Line(p1) => {
-                        if p1.y > max_y {
-                            max_y = p1.y;
-                        } else if p1.y < min_y {
-                            min_y = p1.y;
-                        }
-                    }
-                    Curve::Bend(p1, p2) => {
-                        if p1.y > max_y {
-                            max_y = p1.y;
-                        } else if p1.y < min_y {
-                            min_y = p1.y;
-                        }
-
-                        if p2.y > max_y {
-                            max_y = p2.y;
-                        } else if p2.y < min_y {
-                            min_y = p2.y;
-                        }
-                    }
+            for point in contour {
+                if point.y > max_y {
+                    max_y = point.y;
+                } else if point.y < min_y {
+                    min_y = point.y;
                 }
             }
         }
@@ -257,29 +223,28 @@ impl Shape {
             let mut intersections: Vec<f64> = Vec::new();
 
             for contour in &self.contours {
-                for (i, curve) in contour.iter().enumerate() {
-                    let end = match &contour[(i + 1) % contour.len()] {
-                        Curve::Line(point) | Curve::Bend(point, _) => point,
-                    };
+                for (i, point) in contour.iter().enumerate() {
+                    if !point.touching {
+                        continue;
+                    }
 
                     let y = scanline as f64 + 0.5;
+                    let point2 = &contour[(i + 1) % contour.len()];
 
-                    match curve {
-                        Curve::Line(start) => {
-                            if let Some(n) = intersect_linear(y, start, end) {
+                    if point2.touching {
+                        if let Some(n) = intersect_linear(y, point, point2) {
+                            intersections.push(n);
+                        }
+                    } else {
+                        let point3 = &contour[(i + 2) % contour.len()];
+                        let roots = intersect_quadratic(y, point, point2, point3);
+
+                        for root in roots {
+                            if let Some(n) = root {
                                 intersections.push(n);
                             }
                         }
-                        Curve::Bend(start, control) => {
-                            let roots = intersect_cubic(y, start, control, end);
-
-                            for root in roots {
-                                if let Some(n) = root {
-                                    intersections.push(n);
-                                }
-                            }
-                        }
-                    };
+                    }
                 }
             }
 
@@ -315,7 +280,7 @@ impl Shape {
     }
 }
 
-fn intersect_linear(y: f64, start: &Point, end: &Point) -> Option<f64> {
+fn intersect_linear(y: f64, start: &Point2, end: &Point2) -> Option<f64> {
     if start.y == end.y
         || start.y > y && end.y > y
         || start.y < y && end.y < y
@@ -340,7 +305,7 @@ fn intersect_linear(y: f64, start: &Point, end: &Point) -> Option<f64> {
     None
 }
 
-fn intersect_cubic(y: f64, start: &Point, control: &Point, end: &Point) -> [Option<f64>; 2] {
+fn intersect_quadratic(y: f64, start: &Point2, control: &Point2, end: &Point2) -> [Option<f64>; 2] {
     let mut roots: [Option<f64>; 2] = [None, None];
 
     if start.y == control.y && start.y == end.y
