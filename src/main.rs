@@ -2,8 +2,10 @@ use std::ops;
 use image::save_buffer;
 
 const RES: Vect2<usize> = Vect2 { x: 1920, y: 1000 };
+const Y_SAMPLES: u32 = 16;
 const GAMMA: f64 = 1.0 / 2.2;
 const FILE_NAME: &str = "shape.png";
+const MAX_ERROR: f64 = 1.0E-5;
 
 fn main() {
     let mut screen: Screen<Rgba> = Screen::new(Rgba(1.0, 1.0, 1.0, 1.0));
@@ -133,14 +135,14 @@ impl Screen<Rgba> {
     fn alpha_over(&mut self, mask: Screen<f64>, color: Rgba) {
         for y in 0..self.0.len() {
             for x in 0..self.0[y].len() {
-                match mask.0[y][x] {
-                    0.0 => (),
-                    1.0 => self.0[y][x] = self.0[y][x] + color,
-                    _ => {
-                        let mut new_color = color;
-                        new_color.3 *= mask.0[y][x];
-                        self.0[y][x] = self.0[y][x] + new_color;
-                    },
+                let alpha = mask.0[y][x] / Y_SAMPLES as f64;
+
+                if (alpha - 1.0).abs() <= MAX_ERROR {
+                    self.0[y][x] = self.0[y][x] + color;
+                } else if alpha.abs() > MAX_ERROR {
+                    let mut new_color = color;
+                    new_color.3 *= alpha;
+                    self.0[y][x] = self.0[y][x] + new_color;
                 }
             }
         }
@@ -237,42 +239,42 @@ impl Shape {
         let mut mask: Screen<f64> = Screen::new(0.0);
 
         for scanline in self.y_bounds().rev() {
-            let mut intersections: Vec<f64> = Vec::new();
+            for subcolumn in 1..=Y_SAMPLES {
+                let mut intersections: Vec<f64> = Vec::new();
 
-            for contour in &self.contours {
-                for (i, point) in contour.iter().enumerate() {
-                    if !point.online {
-                        continue;
-                    }
-
-                    let y = scanline as f64 + 0.5;
-                    let point2 = &contour[(i + 1) % contour.len()];
-
-                    if point2.online {
-                        if let Some(n) = intersect_linear(y, point, point2) {
-                            intersections.push(n);
+                for contour in &self.contours {
+                    for (i, point) in contour.iter().enumerate() {
+                        if !point.online {
+                            continue;
                         }
-                    } else {
-                        let point3 = &contour[(i + 2) % contour.len()];
-                        let roots = intersect_quadratic(y, point, point2, point3);
 
-                        for root in roots {
-                            if let Some(n) = root {
+                        let y = scanline as f64 + subcolumn as f64 / (Y_SAMPLES + 1) as f64;
+                        let point2 = &contour[(i + 1) % contour.len()];
+
+                        if point2.online {
+                            if let Some(n) = intersect_linear(y, point, point2) {
                                 intersections.push(n);
+                            }
+                        } else {
+                            let point3 = &contour[(i + 2) % contour.len()];
+                            let roots = intersect_quadratic(y, point, point2, point3);
+
+                            for root in roots {
+                                if let Some(n) = root {
+                                    intersections.push(n);
+                                }
                             }
                         }
                     }
                 }
+
+                intersections.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                let row = &mut mask.0[RES.y - scanline - 1];
+                fill_row(row, &intersections);
             }
-
-            intersections.sort_by(|a, b| a.partial_cmp(b).unwrap());
-
-            let row = &mut mask.0[RES.y - scanline - 1];
-
-            fill_row(row, &intersections);
         }
 
-        return mask;
+        mask
     }
 }
 
@@ -341,20 +343,21 @@ fn intersect_quadratic(y: f64, start: &Point, control: &Point, end: &Point) -> [
 
 fn fill_row(row: &mut [f64], intersections: &[f64]) {
     for i in (0..intersections.len()).step_by(2) {
-        let slice_start = (intersections[i] as usize + 1).clamp(0, RES.x - 1);
-        let pixel1 = (slice_start - 1).clamp(0, RES.x - 1);
-        let slice_end = (intersections[i + 1] as usize).clamp(0, RES.x - 1);
-        let pixel2 = (slice_end).clamp(0, RES.x - 1);
+        let start = (intersections[i] as usize + 1).clamp(0, RES.x - 1);
+        let end = (intersections[i + 1] as usize).clamp(0, RES.x - 1);
 
-        if pixel1 == pixel2 {
-            row[pixel1] = intersections[i + 1] - intersections[i];
-        } else {
-            row[pixel1] = (pixel1 + 1) as f64 - intersections[i];
-            row[pixel2] = intersections[i + 1] - pixel2 as f64;
+        for x_pos in start..end {
+            row[x_pos] += 1.0;
         }
 
-        for x_pos in slice_start..slice_end {
-            row[x_pos] = 1.0;
+        let pixel1 = start - 1;
+        let pixel2 = end;
+
+        if pixel1 == pixel2 {
+            row[pixel1] += intersections[i + 1] - intersections[i];
+        } else {
+            row[pixel1] += (pixel1 + 1) as f64 - intersections[i];
+            row[pixel2] += intersections[i + 1] - pixel2 as f64;
         }
     }
 }
